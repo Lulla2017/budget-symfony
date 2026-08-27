@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block title %}Statistiques{% endblock %}
+{% block body %}
+    <h1>Statistiques et bilans annuels</h1>
+
+    <h2 class="mt-4">Bilan par année</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Année</th>
+                <th>Revenus</th>
+                <th>Dépenses</th>
+                <th>Solde</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for year, data in byYear %}
+            <tr>
+                <td>{{ year }}</td>
+                <td class="text-success">{{ data.income|number_format(2) }} €</td>
+                <td class="text-danger">{{ data.expense|number_format(2) }} €</td>
+                <td class="fw-bold">{{ (data.income - data.expense)|number_format(2) }} €</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">Aucune transaction pour le moment.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="mt-4">Solde par catégorie</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Catégorie</th>
+                <th>Solde</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for name, amount in byCategory %}
+            <tr>
+                <td>{{ name }}</td>
+                <td class="{{ amount >= 0 ? 'text-success' : 'text-danger' }}">{{ amount|number_format(2) }} €</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="2">Aucune donnée.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
